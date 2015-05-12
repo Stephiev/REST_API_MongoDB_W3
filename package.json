@@ -1,14 +1,14 @@
 {
   "name": "REST_API_MongoDB",
   "version": "0.1.0",
-  "description": "",
+  "description": "Simpe REST api backed by MongoDB",
   "main": "server.js",
   "scripts": {
     "test": "./node_modules/grunt-cli/bin/grunt test"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Stephiev/HTTP_Server_Simple_Persistence.git"
+    "url": "https://github.com/Stephiev/REST_API_MongoDB_W3.git"
   },
   "author": "stephievictoria@gmail.com",
   "license": "MIT",
@@ -17,7 +17,7 @@
     "express": "^4.12.3",
     "mongoose": "^4.0.2"
   },
-  "homepage": "https://github.com/Stephiev/HTTP_Server_Simple_Persistence",
+  "homepage": "https://github.com/Stephiev/REST_API_MongoDB_W3",
   "devDependencies": {
     "chai": "^2.3.0",
     "chai-http": "^1.0.0",

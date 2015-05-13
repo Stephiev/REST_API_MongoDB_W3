@@ -1,7 +1,7 @@
 {
   "name": "REST_API_MongoDB",
   "version": "0.1.0",
-  "description": "Simpe REST api backed by MongoDB",
+  "description": "Simple REST api backed by postgres",
   "main": "server.js",
   "scripts": {
     "test": "./node_modules/grunt-cli/bin/grunt test"

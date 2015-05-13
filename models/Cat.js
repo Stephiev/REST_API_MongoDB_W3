@@ -1,4 +1,5 @@
-// Must explicitly create a table and what its going to look like before you can start using it
+// Must explicitly create a table and what it's
+// going to look like before you can start using it
 "use strict";
 
 var Sql = require("sequelize");

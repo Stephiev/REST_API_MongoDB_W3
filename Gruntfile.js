@@ -5,7 +5,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-jscs");
   grunt.loadNpmTasks("grunt-simple-mocha");
 
-  var srcFiles = [ "Gruntfile.js", "test/**/*.js", "server.js", "./models/*.js", "./routes/*.js" ];
+  var srcFiles = [ "Gruntfile.js", "test/**/sequelize*.js", "sequelize_server.js", "./models/*sequelize.js", "./routes/sequelize*.js" ];
 
   grunt.initConfig({
     jshint: {
@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 
     simplemocha: {
       all: {
-        src: [ "test/*test.js" ]
+        src: [ "test/sequelize*test.js" ]
       }
     },
     jscs: {
@@ -29,5 +29,5 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask("test", [ "jshint", "jscs", "simplemocha" ]);
+  grunt.registerTask("test", [ "jscs", "jshint", "simplemocha" ]);
 };

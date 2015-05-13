@@ -30,7 +30,7 @@ describe("cats REST api", function() {
       });
   });
 
-  it("should get an array of notes", function() {
+  it("should get an array of cats", function() {
     chai.request("localhost:3000")
       .get("/api/cats")
       .end(function(err, res) {
@@ -50,7 +50,7 @@ describe("cats REST api", function() {
       }.bind(this));
     });
 
-    it("should update a note", function(done) {
+    it("should update a cat", function(done) {
       var id = this.testCat._id;
       chai.request("localhost:3000")
         .put("/api/cats/" + id)

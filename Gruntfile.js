@@ -5,7 +5,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-jscs");
   grunt.loadNpmTasks("grunt-simple-mocha");
 
-  var srcFiles = [ "Gruntfile.js", "test/**/*.js", "server.js", "./models/*.js", "./routes/*.js" ];
+  var srcFiles = [ "Gruntfile.js", "test/**/*.js", "server.js", "./models/*.js", "./routes/*.js", "./lib/**/*.js" ];
 
   grunt.initConfig({
     jshint: {

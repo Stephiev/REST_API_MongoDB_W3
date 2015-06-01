@@ -8,7 +8,6 @@ var chai     = require("chai");
 var chaihttp = require("chai-http");
 var expect   = chai.expect;
 var User     = require("../models/User");
-var theToken = [];
 var testUser = { username: "tester", email: "mytest@test.com", password: "foobar" };
 var newUser  = { username: "NEWtester", email: "NEWmytest@test.com", password: "foobar" };
 chai.use(chaihttp);

@@ -1,5 +1,5 @@
-'use strict';
+"use strict";
 
 module.exports = function() {
-  return 'Hello world, from the wonderful land of fur!';
+  return "Hello world, from the wonderful land of fur!";
 };

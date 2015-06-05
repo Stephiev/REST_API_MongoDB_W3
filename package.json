@@ -4,7 +4,7 @@
   "description": "Simpe REST api backed by MongoDB",
   "main": "server.js",
   "scripts": {
-    "test": "./node_modules/grunt-cli/bin/grunt test"
+    "test": "./node_modules/grunt-cli/bin/grunt run"
   },
   "repository": {
     "type": "git",

@@ -1,27 +1,28 @@
-'use strict';
+"use strict";
 
 // document.write("Hello from JS");
 
 var greet    = require("./greet");
-var catList  = document.getElementById('catlist');
+var catList  = document.getElementById("catlist");
 var typeList = document.getElementById("typelist");
 var request  = require("superagent");
 
-document.write(greet());
+document.write(greet()); // jshint ignore:line
 
 request
   .get("/api/cats")
-  .end(function(err, res){
-    if (err) return console.log(err);
+  .end(function(err, res) {
+    if (err) {
+      return console.log(err);
+    }
     var cats = JSON.parse(res.text);
-
 
     cats.forEach(function(cat) {
       if (cat.name !== undefined) {
         var noteEl = document.createElement("li");
         noteEl.innerHTML = cat.name;
         catList.appendChild(noteEl);
-    }
+      }
     });
 
     cats.forEach(function(cat) {
@@ -32,7 +33,3 @@ request
       }
     });
   });
-
-// require('angular/angular');
-
-// var notesApp = angular.module('notesApp', []);

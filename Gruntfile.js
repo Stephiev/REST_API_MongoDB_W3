@@ -53,11 +53,6 @@ module.exports = function(grunt) {
       }
     },
 
-    simplemocha: {
-      all: {
-        src: [ "test/*test.js" ]
-      }
-    },
     jscs: {
       src: srcFiles,
       options: {

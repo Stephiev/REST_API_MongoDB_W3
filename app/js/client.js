@@ -1,7 +1,5 @@
 "use strict";
 
-// document.write("Hello from JS");
-
 var greet    = require("./greet");
 var catList  = document.getElementById("catlist");
 var typeList = document.getElementById("typelist");

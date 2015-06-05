@@ -3,11 +3,11 @@ process.env.MONGOLAB_URI = "mongodb://localhost/cats_test";
 require("../server.js");
 
 var mongoose = require("mongoose");
-var chai = require("chai");
+var chai     = require("chai");
 var chaihttp = require("chai-http");
-chai.use(chaihttp);
-var expect = chai.expect;
+var expect   = chai.expect;
 
+chai.use(chaihttp);
 var Cat = require("../models/Cat");
 
 describe("cats REST api", function() {

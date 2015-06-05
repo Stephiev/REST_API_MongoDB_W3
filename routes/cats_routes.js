@@ -1,6 +1,6 @@
 "use strict";
 
-var Cat = require("../models/Cat");
+var Cat        = require("../models/Cat");
 var bodyparser = require("body-parser");
 
 module.exports = function(router) {

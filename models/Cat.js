@@ -8,7 +8,7 @@ var catSchema = mongoose.Schema({
 });
 
 catSchema.path("name").validate(function(v) {
-  return v.length > 3;
+  return v.length >= 3;
 }, "Invalid name, must be longer than 3 characters");
 
 module.exports = mongoose.model("Cat", catSchema);

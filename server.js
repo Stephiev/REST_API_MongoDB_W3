@@ -7,7 +7,8 @@ var catsRoutes = express.Router();
 
 mongoose.connect("mongodb://localhost/cats_development");
 
-app.use(express.static(__dirname + "/build"));
+app.use(express.static(__dirname + "/build")); // Files inside /build are
+// going to be statically served up from our app using this express.static
 
 require("./routes/cats_routes")(catsRoutes);
 

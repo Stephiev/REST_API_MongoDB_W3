@@ -1,33 +1,30 @@
 "use strict";
 
-var greet    = require("./greet");
-var catList  = document.getElementById("catlist");
-var typeList = document.getElementById("typelist");
-var request  = require("superagent");
+require("angular/angular");
 
-document.write(greet()); // jshint ignore:line
+// Our list of dependencies (in the square brackets)
+// in the form of dependency injections
+var catsApp = angular.module("catsApp", []);
 
-request
-  .get("/api/cats")
-  .end(function(err, res) {
-    if (err) {
-      return console.log(err);
-    }
-    var cats = JSON.parse(res.text);
+// $scope is a JS object we can access form our view
+// and in our controller
+// This is how we get data from our model into our view
+// $scope should only be used in directives and controllers
+catsApp.controller("catsController", [ "$scope", function($scope) {
+  $scope.greeting = "hello world!";
+  $scope.displayGreeting = function() {
+    alert($scope.greeting);
+  };
+} ]);
 
-    cats.forEach(function(cat) {
-      if (cat.name !== undefined) {
-        var noteEl = document.createElement("li");
-        noteEl.innerHTML = cat.name;
-        catList.appendChild(noteEl);
-      }
-    });
+catsApp.controller("anotherController", [ "$scope", function($scope) {
+  $scope.greeting = "another greeting";
+} ]);
 
-    cats.forEach(function(cat) {
-      if (cat.type !== undefined) {
-        var noteEl = document.createElement("li");
-        noteEl.innerHTML = cat.type;
-        typeList.appendChild(noteEl);
-      }
-    });
-  });
+catsApp.controller("oneMoreController", [ "$scope", function($scope) {
+
+} ]);
+
+// Changes in the view affect the scope in the controller
+// that corresponds to that view. When we update one we
+// update the other.

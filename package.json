@@ -28,7 +28,6 @@
     "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-jshint": "^0.11.2",
     "grunt-jscs": "^1.8.0",
-    "grunt-simple-mocha": "^0.4.0",
     "grunt-webpack": "^1.0.8",
     "mocha": "^2.2.4",
     "node-libs-browser": "^0.5.2",

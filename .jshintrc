@@ -1,5 +1,7 @@
 {
  "node": true,
+ "devel": true,
+ "browser": true,
    "globals": {
      "describe": true,
      "it": true,
@@ -7,6 +9,6 @@
      "after": true,
      "beforeEach": true,
      "afterEach": true,
-     "document": true
+     "angular": true
    }
  }

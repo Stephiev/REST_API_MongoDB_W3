@@ -15,11 +15,12 @@ module.exports = function(app) {
         });
     };
 
-    // Make run in an async fashion, see note before stored in db
+    // Make run in an async fashion, see cat before stored in db
     $scope.createNewCat = function() {
       $scope.cats.push($scope.newCat); // Update the UI before receiving a response
       $http.post("/api/cats", $scope.newCat)
         .success(function(data) {
+          $scope.newCat._id = data._id; // Plact ID on newCat object so we can edit
           $scope.newCat = null;
         })
         .error(function(data) {
@@ -30,7 +31,7 @@ module.exports = function(app) {
 
     $scope.removeCat = function(cat) {
       $scope.cats.splice($scope.cats.indexOf(cat), 1);
-      $http.delete("/api/cats/sdfsdf" + cat._id)
+      $http.delete("/api/cats/" + cat._id)
         .error(function(data) {
           console.log(data);
           $scope.errors.push({ msg: "could not remove cat \"" + cat.name + "\"" });
@@ -41,13 +42,12 @@ module.exports = function(app) {
     $scope.catEdit = function(cat) {
       cat.editing = true;
       cat.originalCat = cat.name;
+
     };
 
     $scope.cancelEdit = function(cat) {
-      console.log(cat.name);
       cat.name = cat.originalCat;
       cat.editing = false;
-      console.log(cat.name);
     };
 
     $scope.saveEdit = function(cat) {
@@ -55,7 +55,8 @@ module.exports = function(app) {
       $http.put("/api/cats/" + cat._id, cat)
         .error(function(data) {
           console.log(data);
-          $scope.errors.push({ msg: "Error editing cat" });
+          $scope.errors.push({ msg: "Error editing cat from " + cat.originalCat + " to " + cat.name });
+          cat.name = cat.originalCat;
         });
     };
 

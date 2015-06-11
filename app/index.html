@@ -22,8 +22,22 @@
   <title>Client Side</title>
 </head>
 <body data-ng-app="catsApp">
-  <main data-ng-controller="catsController">
-
+  <main data-ng-controller="catsController" data-ng-init="getAll()">
+    <h1>Cats:</h1>
+    <aside data-ng-if="errors.length">
+      <h2>Errors:</h2>
+      <ul data-ng-repeat="error in errors">
+        <li>{{error.msg}}</li>
+      </ul>
+      <button data-ng-click="clearErrors()"> Clear Errors</button>
+    </aside>
+    <form name="newCatForm" data-ng-submit="createNewCat()">
+      <input type="text" data-ng-model="newCat.name">
+      <button type="submit">Create New Cat</button>
+    </form>
+    <ul data-ng-repeat="cat in cats">
+      <li>{{cat.name}}<button data-ng-click="removeCat(cat)">Delete</button></li>
+    </ul>
   </main>
   <script src="bundle.js"></script>
 </body>

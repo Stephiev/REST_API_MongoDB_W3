@@ -10,11 +10,12 @@ var catsApp = angular.module("catsApp", []);
 // and in our controller
 // This is how we get data from our model into our view
 // $scope should only be used in directives and controllers
-catsApp.controller("catsController", [ "$scope", function($scope) {
 
-} ]);
+// catsApp.controller("catsController", [ "$scope", function($scope) {
 
+// } ]);
 
+require("./cats/controllers/cats_controller")(catsApp);
 
 // Changes in the view affect the scope in the controller
 // that corresponds to that view. When we update one we

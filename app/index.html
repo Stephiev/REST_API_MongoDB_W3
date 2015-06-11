@@ -36,7 +36,17 @@
       <button type="submit">Create New Cat</button>
     </form>
     <ul data-ng-repeat="cat in cats">
-      <li>{{cat.name}}<button data-ng-click="removeCat(cat)">Delete</button></li>
+      <li>{{cat.name}}
+          <button data-ng-click="removeCat(cat)">Delete</button>
+              <button data-ng-if="!cat.editing" data-ng-click="catEdit(cat)">Edit</button>
+
+<!--           <button data-ng-if="!cat.editing" data-ng-click="cat.editing = true">Edit</button>
+ -->          <form name="{{'editing' + cat._id}}" data-ng-if="cat.editing">
+            <input type="text" data-ng-model="cat.name">
+            <button type="submit" data-ng-click="saveEdit(cat)">Save Changes</button>
+            <button data-ng-click="cancelEdit(cat)">Cancel</button>
+          </from>
+      </li>
     </ul>
   </main>
   <script src="bundle.js"></script>

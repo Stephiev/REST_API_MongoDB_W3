@@ -18,10 +18,8 @@ module.exports = function(app) {
     // Make run in an async fashion, see note before stored in db
     $scope.createNewCat = function() {
       $scope.cats.push($scope.newCat); // Update the UI before receiving a response
-      $http.post("/api/catslllll", $scope.newCat)
+      $http.post("/api/cats", $scope.newCat)
         .success(function(data) {
-
-          // $scope.cats.push(data);
           $scope.newCat = null;
         })
         .error(function(data) {
@@ -32,16 +30,37 @@ module.exports = function(app) {
 
     $scope.removeCat = function(cat) {
       $scope.cats.splice($scope.cats.indexOf(cat), 1);
-      $http.delete("/api/cats/lkkklkllkj" + cat._id)
+      $http.delete("/api/cats/sdfsdf" + cat._id)
         .error(function(data) {
           console.log(data);
           $scope.errors.push({ msg: "could not remove cat \"" + cat.name + "\"" });
+          $scope.cats.push(cat);
       });
+    };
+
+    $scope.catEdit = function(cat) {
+      cat.editing = true;
+      cat.originalCat = cat.name;
+    };
+
+    $scope.cancelEdit = function(cat) {
+      console.log(cat.name);
+      cat.name = cat.originalCat;
+      cat.editing = false;
+      console.log(cat.name);
+    };
+
+    $scope.saveEdit = function(cat) {
+      cat.editing = false;
+      $http.put("/api/cats/" + cat._id, cat)
+        .error(function(data) {
+          console.log(data);
+          $scope.errors.push({ msg: "Error editing cat" });
+        });
     };
 
     $scope.clearErrors = function() {
       $scope.errors = [];
-      $scope.getAll();
     };
   } ]);
 

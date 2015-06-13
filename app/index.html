@@ -1,90 +1,12 @@
-<!-- <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Client Side</title>
+  <title>Cats</title>
 </head>
 <body>
-  <h1>Welcome to FurLand, the World of Cats!</h1>
-  <p> Here is a list of the cats that live in Furland.</p>
-  <ul id="catlist"></ul>
-  <p>And here is a list of some of the types of cats that live here.</p>
-  <ul id="typelist"></ul>
+  <main id="DbCats"></main>
+  <div id="CatNames"></div>
   <script src="bundle.js"></script>
 </body>
-</html> -->
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Client Side</title>
-</head>
-<body data-ng-app="catsApp">
-  <main data-ng-controller="catsController" data-ng-init="getAll()">
-    <h1>Cats:</h1>
-    <aside data-ng-if="errors.length">
-      <h2>Errors:</h2>
-      <ul data-ng-repeat="error in errors">
-        <li>{{error.msg}}</li>
-      </ul>
-      <button data-ng-click="clearErrors()"> Clear Errors</button>
-    </aside>
-    <form name="newCatForm" data-ng-submit="createNewCat()">
-      <input type="text" data-ng-model="newCat.name">
-      <button type="submit">Create New Cat</button>
-    </form>
-    <ul data-ng-repeat="cat in cats">
-      <li>{{cat.name}}
-          <button data-ng-click="removeCat(cat)">Delete</button>
-              <button data-ng-if="!cat.editing" data-ng-click="catEdit(cat)">Edit</button>
-            <form name="{{'editing' + cat._id}}" data-ng-if="cat.editing" data-ng-submit="saveEdit(cat)">
-            <input type="text" data-ng-model="cat.name">
-            <button type="submit">Save Changes</button>
-            <button data-ng-click="cancelEdit(cat)">Cancel</button>
-          </form>
-      </li>
-    </ul>
-  </main>
-  <script src="bundle.js"></script>
-</body>
-</html> -->
-
-<!DOCTYPE html>
-<html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <title>Client Side</title>
-   </head>
-   <body data-ng-app="catsApp">
-      <main data-ng-controller="catsController" data-ng-init="getAll()">
-         <h1>Welcome to FurLand, the World of Cats!</h1>
-         <h2>Cats:</h2>
-         <aside data-ng-if="errors.length">
-            <h2>Errors:</h2>
-            <ul data-ng-repeat="error in errors">
-               <li>{{error.msg}}</li>
-            </ul>
-            <button data-ng-click="clearErrors()"> Clear Errors</button>
-         </aside>
-         <form name="newCatForm" data-ng-submit="createNewCat()">
-            <input type="text" required data-ng-model="newCat.name">
-            <button type="submit" data-ng-disabled="newCatForm.$invalid">Create New Cat</button>
-         </form>
-         <ul data-ng-repeat="cat in cats">
-            <li>
-               {{cat.name}}
-               <button data-ng-click="removeCat(cat)">Delete</button>
-               <button data-ng-if="!cat.editing" data-ng-click="catEdit(cat)">Edit</button>
-               <form name="{{'editing' + cat._id}}" data-ng-if="cat.editing" data-ng-submit="saveEdit(cat)">
-                  <input type="text" data-ng-model="cat.name">
-                  <button type="submit">Save Changes</button>
-                  <button data-ng-click="cancelEdit(cat)">Cancel</button>
-               </form>
-            </li>
-         </ul>
-      </main>
-      <script src="bundle.js"></script>
-   </body>
 </html>

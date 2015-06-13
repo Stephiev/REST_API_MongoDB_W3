@@ -1,33 +1,59 @@
 "use strict";
 
-var React   = require("react");
-var CatList = require("./components/cats_list.jsx");
+var React       = require('react');
+var CatNameForm = require('./components/catName_form.jsx');
+var CatNameList = require('./components/catName_list.jsx');
+var CatList     = require("./components/DBcats_list.jsx");
+var request     = require("superagent");
 
-var App = React.createClass({
+var DbCatsComponent = React.createClass({
+  getInitialState: function() {
+    return {cats: [], title: "Welcome to FurLand!"};
+  },
+
+  componentDidMount: function() {
+    request
+      .get("/api/cats")
+      .end(function(err, res) {
+        if (err) {
+          return console.log(err);
+        }
+        this.setState({cats: res.body});
+      }.bind(this)); // want to be able to get this.getState
+  },
+
   render: function() {
     return (
       <main>
-        <h1>{this.props.title}</h1>
-        <CatList data={[{name: "Some Name"}]} />
+        <h1>{this.state.title}</h1>
+        <h2>Here is a list of all the cats that live here</h2>
+        <CatList data={this.state.cats} />
       </main>
       )
   }
 });
 
-react.render(<App title="Cats and stuff" />, document.body);
-// require("angular/angular");
+React.render(<DbCatsComponent />, document.body.getElementsByTagName("main")[0])
 
-// // Our list of dependencies (in the square brackets)
-// // in the form of dependency injections
-// var catsApp = angular.module("catsApp", []);
+var FormComponent = React.createClass({
+  updateName: function(newCatName) {
+    this.props.names.push(newCatName);
+    this.setState({catName: newCatName});
+  },
+  getInitialState: function() {
+    return {catName: ""};
+  },
+  render: function() {
+    return(
+      <main>
+        <h1>What are some cat names you like?</h1>
+        <CatNameForm entered={this.updateName}/>
+        <h2>Here are the names you have entered:</h2>
+        <CatNameList data={this.props.names}/>
+        <p>Those are some nice names!</p>
+      </main>
+    );
+  }
+});
 
-// // $scope is a JS object we can access form our view
-// // and in our controller
-// // This is how we get data from our model into our view
-// // $scope should only be used in directives and controllers
-
-// require("./cats/controllers/cats_controller")(catsApp);
-
-// // Changes in the view affect the scope in the controller
-// // that corresponds to that view. When we update one we
-// // update the other.
+React.render(<FormComponent names={[]}/>, document.body.getElementsByTagName("div")[0]);

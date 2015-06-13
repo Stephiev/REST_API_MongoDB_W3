@@ -1,9 +1,10 @@
 "use strict";
 
+
 var React       = require('react');
-var CatNameForm = require('./components/catName_form.jsx');
-var CatNameList = require('./components/catName_list.jsx');
-var CatList     = require("./components/DBcats_list.jsx");
+var FavCatNameForm = require('./components/catName_form.jsx');
+var FavCatNameList = require('./components/catName_list.jsx');
+var DBCatList     = require("./components/DBcats_list.jsx");
 var request     = require("superagent");
 
 var DbCatsComponent = React.createClass({
@@ -27,7 +28,7 @@ var DbCatsComponent = React.createClass({
       <main>
         <h1>{this.state.title}</h1>
         <h2>Here is a list of all the cats that live here</h2>
-        <CatList data={this.state.cats} />
+        <DBCatList data={this.state.cats} />
       </main>
       )
   }
@@ -47,9 +48,9 @@ var FormComponent = React.createClass({
     return(
       <main>
         <h1>What are some cat names you like?</h1>
-        <CatNameForm entered={this.updateName}/>
+        <FavCatNameForm entered={this.updateName}/>
         <h2>Here are the names you have entered:</h2>
-        <CatNameList data={this.props.names}/>
+        <FavCatNameList data={this.props.names}/>
         <p>Those are some nice names!</p>
       </main>
     );

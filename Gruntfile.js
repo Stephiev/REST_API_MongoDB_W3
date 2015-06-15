@@ -52,7 +52,7 @@ module.exports = function(grunt) {
       }
     },
 
-// "Gruntfile.js", "test/**/*test.js", "server.js", "./models/*.js", "./routes/*.js", "app/**/*.js", "./test/karma_tests/test_entry.js"
+// Fix linted and jscsd files
        jshint: {
       dev: {
         src: [ "Gruntfile.js", "server.js", "models/**/*.js", "./routes/**/*.js" ],

@@ -7,10 +7,10 @@ module.exports = function(app) {
     $scope.getAll = function() {
       $http.get("/api/cats") // returns a promises with 2 different pieces. a .success and .error
         .success(function(data) {
-          console.log(data);
           $scope.cats = data; // coming from our DB in our REST api is an array of cats. setting that array to scope.cats
         })
         .error(function(data) {
+          console.log(data);
           $scope.errors.push({ msg: "error retrieving cats" });
         });
     };
@@ -20,7 +20,7 @@ module.exports = function(app) {
       $scope.cats.push($scope.newCat); // Update the UI before receiving a response
       $http.post("/api/cats", $scope.newCat)
         .success(function(data) {
-          $scope.newCat._id = data._id; // Plact ID on newCat object so we can edit
+          $scope.newCat._id = data._id; // Place ID on newCat object so we can edit
           $scope.newCat = null;
         })
         .error(function(data) {

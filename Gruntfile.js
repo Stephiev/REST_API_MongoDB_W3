@@ -7,7 +7,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-jshint");
   grunt.loadNpmTasks("grunt-jscs");
 
-  var srcFiles = [ "Gruntfile.js", "test/**/*test.js", "server.js", "./models/*.js", "./routes/*.js", "app/**/*.js" ];
+  var srcFiles = [ "Gruntfile.js", "test/client/*test.js", "test/*test.js", "server.js", "./models/*.js", "./routes/*.js", "app/**/*.js" ];
 
   grunt.initConfig({
 
@@ -23,6 +23,13 @@ module.exports = function(grunt) {
         entry: __dirname + "/test/client/test.js",
         output: {
           path: "test/client/",
+          file: "bundle.js"
+        }
+      },
+      karmaTest: {
+        entry: __dirname + "/test/karma_tests/test_entry.js",
+        output: {
+          path: "test/karma_tests",
           file: "bundle.js"
         }
       }
@@ -45,11 +52,59 @@ module.exports = function(grunt) {
       }
     },
 
-     jshint: {
-      files: srcFiles,
-      options: {
-        sub: true,
-        jshintrc: true
+    //  jshint: {
+    //   files: srcFiles,
+    //   options: {
+    //     sub: true,
+    //     jshintrc: true
+    //   }
+    // },
+
+       jshint: {
+      dev: {
+        src: [ "Gruntfile.js", "!build/**", "server.js", "lib/**/*.js", "models/**/*.js", "routes/**/*.js", "app/**/*.js" ],
+        options: {
+          node: true,
+          globals: {
+            describe: true,
+            it: true,
+            before: true,
+            after: true,
+            beforeEach: true,
+            afterEach: true
+          }
+        }
+      },
+      jasmine: {
+        src: [ "test/karma_tests/*test.js" ],
+        options: {
+          node: true,
+          jasmine: true,
+          globals: {
+            describe: true,
+            it: true,
+            before: true,
+            after: true,
+            beforeEach: true,
+            afterEach: true,
+            expect: true,
+            angular: true
+          }
+        }
+      },
+      mocha: {
+        src: [ "test/client/*test.js", "test/server_test.js" ],
+        options: {
+          node: true,
+          globals: {
+            describe: true,
+            it: true,
+            before: true,
+            after: true,
+            beforeEach: true,
+            afterEach: true
+          }
+        }
       }
     },
 
@@ -64,7 +119,8 @@ module.exports = function(grunt) {
   grunt.registerTask("build:dev", [ "webpack:client", "copy:html", "test" ]);
   grunt.registerTask("build", [ "build:dev" ]);
   grunt.registerTask("test", [ "webpack:test" ]);
-  grunt.registerTask("pretty", [ "jshint", "jscs" ]);
+  grunt.registerTask("pretty", [ "jshint:mocha", "jscs", "jshint:jasmine" ]);
   grunt.registerTask("default", [ "build", "pretty" ]);
   grunt.registerTask("run", [ "default" ]);
+
 };

@@ -1,5 +1,5 @@
 "use strict";
-
+// Mocha/Chai
 var expect = require("chai").expect;
 var greet  = require("../../app/js/greet");
 

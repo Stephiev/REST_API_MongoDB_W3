@@ -7,7 +7,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-jshint");
   grunt.loadNpmTasks("grunt-jscs");
 
-  var srcFiles = [ "Gruntfile.js", "test/client/*test.js", "test/*test.js", "server.js", "./models/*.js", "./routes/*.js", "app/**/*.js" ];
+  var srcFiles = [ "Gruntfile.js", "test/**/*test.js", "server.js", "./models/*.js", "./routes/*.js", "app/**/*.js", "./test/karma_tests/test_entry.js" ];
 
   grunt.initConfig({
 
@@ -52,17 +52,10 @@ module.exports = function(grunt) {
       }
     },
 
-    //  jshint: {
-    //   files: srcFiles,
-    //   options: {
-    //     sub: true,
-    //     jshintrc: true
-    //   }
-    // },
-
+// "Gruntfile.js", "test/**/*test.js", "server.js", "./models/*.js", "./routes/*.js", "app/**/*.js", "./test/karma_tests/test_entry.js"
        jshint: {
       dev: {
-        src: [ "Gruntfile.js", "!build/**", "server.js", "lib/**/*.js", "models/**/*.js", "routes/**/*.js", "app/**/*.js" ],
+        src: [ "Gruntfile.js", "server.js", "models/**/*.js", "./routes/**/*.js" ],
         options: {
           node: true,
           globals: {
@@ -72,6 +65,7 @@ module.exports = function(grunt) {
             after: true,
             beforeEach: true,
             afterEach: true
+
           }
         }
       },
@@ -93,7 +87,7 @@ module.exports = function(grunt) {
         }
       },
       mocha: {
-        src: [ "test/client/*test.js", "test/server_test.js" ],
+        src: [ "test/client/*test.js", "./app/js/*.js" ],
         options: {
           node: true,
           globals: {
@@ -102,7 +96,8 @@ module.exports = function(grunt) {
             before: true,
             after: true,
             beforeEach: true,
-            afterEach: true
+            afterEach: true,
+            angular: true
           }
         }
       }
@@ -116,11 +111,12 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.registerTask("pretty", [ "jshint:mocha", "jshint:dev", "jshint:jasmine", "jscs" ]);
   grunt.registerTask("build:dev", [ "webpack:client", "copy:html", "test" ]);
   grunt.registerTask("build", [ "build:dev" ]);
   grunt.registerTask("test", [ "webpack:test" ]);
-  grunt.registerTask("pretty", [ "jshint:mocha", "jscs", "jshint:jasmine" ]);
   grunt.registerTask("default", [ "build", "pretty" ]);
+  grunt.registerTask("karmaBuild", [ "webpack:karmaTest" ]);
   grunt.registerTask("run", [ "default" ]);
 
 };

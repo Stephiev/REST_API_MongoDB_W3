@@ -6,6 +6,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-clean");
   grunt.loadNpmTasks("grunt-contrib-jshint");
   grunt.loadNpmTasks("grunt-jscs");
+  grunt.loadNpmTasks("grunt-karma");
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-concurrent');
 
   var srcFiles = [ "Gruntfile.js", "test/**/*test.js", "server.js", "./models/*.js", "./routes/*.js", "app/**/*.js", "./test/karma_tests/test_entry.js" ];
 
@@ -32,6 +36,12 @@ module.exports = function(grunt) {
           path: "test/karma_tests",
           file: "bundle.js"
         }
+      }
+    },
+
+    karma: {
+      test: {
+        configFile: "karma.conf.js"
       }
     },
 
@@ -102,6 +112,30 @@ module.exports = function(grunt) {
         }
       }
     },
+      //task automation
+    watch: {
+      js: {
+        files: ['app/js/**/*.js'],
+        tasks: ['build'],
+      },
+      html: {
+        files: ['app/**/*.html'],
+        tasks: ['copy:html'],
+      }
+      // css: {
+      //   files: ['app/**/*.scss'],
+      //   tasks: ['sass', 'autoprefixer:sass'],
+      // }
+    },
+    //not sure if/how this works. check with Stefan
+    nodemon: {
+      dev: {
+        script: 'server.js',
+      }
+    },
+    concurrent: {
+      nodemonWatch: ['nodemon:dev', 'watch'],
+    },
 
     jscs: {
       src: srcFiles,
@@ -116,7 +150,10 @@ module.exports = function(grunt) {
   grunt.registerTask("build", [ "build:dev" ]);
   grunt.registerTask("test", [ "webpack:test" ]);
   grunt.registerTask("default", [ "build", "pretty" ]);
-  grunt.registerTask("karmaBuild", [ "webpack:karmaTest" ]);
+  grunt.registerTask("karmatest", ["webpack:karmaTest", "karma:test"])
+  // grunt.registerTask("karmaBuild", [ "webpack:karmaTest" ]);
   grunt.registerTask("run", [ "default" ]);
+  grunt.registerTask('serve:dev', [ 'build:dev', 'concurrent:nodemonWatch' ]);
+
 
 };

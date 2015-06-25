@@ -3,3 +3,4 @@
 **/db/
 **/build/*
 **/test/client/bundle.js
+**/test/**/bundle.js

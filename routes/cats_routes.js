@@ -24,7 +24,7 @@ module.exports = function(router) {
         console.log(err);
         return res.status(500).json({ msg: "internal server error." });
       }
-      // res.status(200).json({msg: "success"});
+
       setTimeout(function() {res.json(data); }, 500);
     });
   });

@@ -46,6 +46,7 @@
 
 	__webpack_require__(1); // require each of our tests into this entry point so it can bundle them
 	__webpack_require__(2);
+	__webpack_require__(9);
 
 
 /***/ },
@@ -71,7 +72,7 @@
 	"use strict";
 
 	__webpack_require__(3);
-	__webpack_require__(6);
+	__webpack_require__(8);
 
 	describe("cats controller",  function() {
 	  var $ControllerConstructor;
@@ -86,7 +87,7 @@
 	  })); // not using brackets cause not going to minify it
 
 	  it("should be able to create a new controller", function() {
-	    var catsController = $ControllerConstructor("catsController", {$scope: $scope});
+	    var catsController = $ControllerConstructor("catsController", { $scope: $scope });
 	    expect(typeof catsController).toBe("object");
 	    expect(Array.isArray($scope.cats)).toBe(true);
 	    expect(Array.isArray($scope.errors)).toBe(true);
@@ -96,7 +97,7 @@
 	  describe("REST functionality", function() {
 	    beforeEach(angular.mock.inject(function(_$httpBackend_) {
 	      $httpBackend = _$httpBackend_;
-	      this.catsController = $ControllerConstructor("catsController", {$scope: $scope});
+	      this.catsController = $ControllerConstructor("catsController", { $scope: $scope });
 	    }));
 
 	    afterEach(function() {
@@ -105,7 +106,7 @@
 	    });
 
 	    it("should make a get request on index", function() {
-	      $httpBackend.expectGET("/api/cats").respond(200, [{_id: "1", name: "test cat name"}]);
+	      $httpBackend.expectGET("/api/cats").respond(200, [ { _id: "1", name: "test cat name" } ]);
 	      $scope.getAll();
 	      $httpBackend.flush();
 	      expect($scope.cats[0].name).toBe("test cat name");
@@ -113,7 +114,7 @@
 	    });
 
 	    it("should correctly handle errors", function() {
-	      $httpBackend.expectGET("/api/cats").respond(500, {msg: "server error"});
+	      $httpBackend.expectGET("/api/cats").respond(500, { msg: "server error" });
 
 	      $scope.getAll();
 	      $httpBackend.flush();
@@ -122,8 +123,8 @@
 	    });
 
 	    it("should be able to save a cat", function() {
-	      $scope.newCat = {name: "test cat"};
-	      $httpBackend.expectPOST("/api/cats").respond(200, {_id: "2", name: "test cat"});
+	      $scope.newCat = { name: "test cat" };
+	      $httpBackend.expectPOST("/api/cats").respond(200, { _id: "2", name: "test cat" });
 	      $scope.createNewCat();
 	      $httpBackend.flush();
 	      expect($scope.cats[0].name).toBe("test cat");
@@ -132,9 +133,9 @@
 	    });
 
 	    it("should delete a cat", function() {
-	      var cat = {_id: "3", name: "test cat"};
+	      var cat = { _id: "3", name: "test cat" };
 	      $scope.cats.push(cat);
-	      $httpBackend.expectDELETE("/api/cats/3").respond(200, {msg: "success"});
+	      $httpBackend.expectDELETE("/api/cats/3").respond(200, { msg: "success" });
 	      expect($scope.cats.indexOf(cat)).not.toBe(-1);
 	      $scope.removeCat(cat);
 	      expect($scope.cats.indexOf(cat)).toBe(-1);
@@ -143,9 +144,9 @@
 	    });
 
 	    it("should delete a cat even with server error", function() {
-	      var cat = {_id: "4", name: "test cat"};
+	      var cat = { _id: "4", name: "test cat" };
 	      $scope.cats.push(cat);
-	      $httpBackend.expectDELETE("/api/cats/4").respond(500, {msg: "uhh ohhh"});
+	      $httpBackend.expectDELETE("/api/cats/4").respond(500, { msg: "uhh ohhh" });
 	      expect($scope.cats.indexOf(cat)).not.toBe(-1);
 	      $scope.removeCat(cat);
 	      expect($scope.cats.indexOf(cat)).toBe(-1);
@@ -154,16 +155,16 @@
 	      expect($scope.errors[0].msg).toBe("could not remove cat \"test cat\"");
 	    });
 
-	    it('should be able to edit a cat', function() {
-	      var cat = {_id: 5, name: "test cat"};
+	    it("should be able to edit a cat", function() {
+	      var cat = { _id: 5, name: "test cat" };
 	      $scope.cats.push(cat);
 	      $scope.catEdit(cat);
-	      cat.name = 'updated cat';
-	      $httpBackend.expectPUT('/api/cats/' + cat._id, cat ).respond(200, [ cat ]);
+	      cat.name = "updated cat";
+	      $httpBackend.expectPUT("/api/cats/" + cat._id, cat ).respond(200, [ cat ]);
 	      $scope.saveEdit(cat);
 	      $httpBackend.flush();
 	      expect($scope.errors.length).toBe(0);
-	      expect($scope.cats[0].name).toBe('updated cat');
+	      expect($scope.cats[0].name).toBe("updated cat");
 	    });
 	  });
 	});
@@ -186,7 +187,16 @@
 	// This is how we get data from our model into our view
 	// $scope should only be used in directives and controllers
 
+
+	// services
 	__webpack_require__(5)(catsApp);
+	__webpack_require__(6)(catsApp);
+
+
+	// controllers
+	__webpack_require__(7)(catsApp);
+
+	// directives
 
 	// Changes in the view affect the scope in the controller
 	// that corresponds to that view. When we update one we
@@ -28335,45 +28345,161 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	module.exports = function(app) {
+	  app.factory('copy', function() {
+	    return function(objToCopy) {
+	      var obj = {};
+	      Object.keys(objToCopy).forEach(function(key) {
+	        obj[key] = objToCopy[key];
+	      });
+	      return obj;
+	    };
+	  });
+	};
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	// 3 diff ways to create a service, most common is the factory
+	// method.
+	// all factories will return an object and the object will have a series
+	// of methods on it. $hhtp service looks like this
+	// unlike a controller you're always going to return
+	module.exports = function(app) {
+	  var handleError = function(callback) {
+	    return function(data) {
+	      console.log(data);
+	      callback(data);
+	    }
+	  };
+
+	  var handlSuccess = function(callback) {
+	    return function(data) {
+	      callback(null, data);
+	    }
+	  };
+
+	  app.factory("RESTresource", ["$http", function($http) { // can remove it from our controller now
+	    return function(resourceName) {  // return a function that returns a fxn
+	      return {
+	        getAll: function(callback) { // could also be called find
+	          $http.get("/api/" + resourceName)
+	            .success(handlSuccess(callback))
+	            .error(handleError(callback));
+	        },
+
+	        create: function(resourceData, callback) {
+	          $http.post("/api/" + resourceName, resourceData)
+	            .success(handlSuccess(callback))
+	            .error(handleError(callback)); // callback defined in controller
+	        },
+	      // },
+
+	      save: function(resourceData, callback) {
+	        $http.put("/api/" + resourceName + "/" + resourceData._id, resourceData)
+	          .success(handlSuccess(callback))
+	          .error(handleError(callback));
+	        },
+	      // },
+
+	      remove: function(resourceData, callback) {
+	        $http.delete("/api/" + resourceName + "/" + resourceData._id)
+	          .success(handlSuccess(callback))
+	          .error(handleError(callback));
+	      }
+	      // don't need to have .success and .error we're making this a node-style callbacks
+	     }
+	    };
+	  }]);
+	};
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 
 	module.exports = function(app) {
-	  app.controller("catsController", [ "$scope", "$http", function($scope, $http) {
+	  app.controller("catsController", [ "$scope", "copy", "RESTresource", function($scope, copy, resource) {
+	    var Cat = resource("cats"); // this is where resourceName gets passed into our fxn
 	    $scope.errors = [];
 	    $scope.cats = [];
 	    $scope.getAll = function() {
-	      $http.get("/api/cats") // returns a promises with 2 different pieces. a .success and .error
-	        .success(function(data) {
-	          $scope.cats = data; // coming from our DB in our REST api is an array of cats. setting that array to scope.cats
+	      // $http.get("/api/cats") // returns promises with 2 different pieces. a .success and .error
+	        // .success(function(data) {
+	        //   $scope.cats = data; // coming from our DB in our REST api is an array of cats. setting that array to scope.cats
+	        // })
+	        // .error(function(data) {
+	        //   console.log(data);
+	        //   $scope.errors.push({ msg: "error retrieving cats" });
+	        // });
+	        Cat.getAll(function(err, data) {
+	          if (err) return $scope.errors.push({ msg: "error retrieving cats" }); // use return to exit fxn early
+	          $scope.cats = data;
 	        })
-	        .error(function(data) {
-	          console.log(data);
-	          $scope.errors.push({ msg: "error retrieving cats" });
-	        });
 	    };
 
 	    // Make run in an async fashion, see cat before stored in db
-	    $scope.createNewCat = function() {
-	      $scope.cats.push($scope.newCat); // Update the UI before receiving a response
-	      $http.post("/api/cats", $scope.newCat)
-	        .success(function(data) {
-	          $scope.newCat._id = data._id; // Place ID on newCat object so we can edit
-	          $scope.newCat = null;
-	        })
-	        .error(function(data) {
-	          console.log(data);
-	          $scope.errors.push({ msg: "could not create a new cat" });
-	        });
+	    $scope.createNewCat = function(cat) {
+	      // $scope.cats.push($scope.newCat); // Update the UI before receiving a response
+	      // $http.post("/api/cats", $scope.newCat)
+	      //   .success(function(data) {
+	      //     $scope.newCat._id = data._id; // Place ID on newCat object so we can edit
+	      //     $scope.newCat = null;
+	      //   })
+	      //   .error(function(data) {
+	      //     console.log(data);
+	      //     $scope.errors.push({ msg: "could not create a new cat" });
+	      //   });
+	      // console.log("this is cat")
+	      // console.log(cat);
+	      // var newCat = copy(cat);
+
+	      // cat.name = "";
+	      // var newCat = $scope.newCat;
+	      // $scope.cats.push(newCat);
+	      // Cat.create(newCat, function(err, data) {
+	      //   if (err) return $scope.erros.push({ msg: "could not save cat: " + newCat.name});
+	      //   $scope.cats.splice($scope.cats.indexOf(newCat), 1, data);
+	      // })
+
+	      // $scope.newCat._id = data._id
+	      var newCat = $scope.newCat;
+	      $scope.newCat = null;
+	      $scope.cats.push(newCat);
+	      Cat.create(newCat, function(err, data) {
+	        if (err) {
+	          // $scope.cats.splice($scope.cats.indexOf(newCat), 1);
+	         return $scope.errors.push({msg: 'Error saving cat: ' + newCat.name });
+	        }
+
+	        $scope.cats.splice($scope.cats.indexOf(newCat), 1, data);
+	      });
 	    };
+
+
 
 	    $scope.removeCat = function(cat) {
 	      $scope.cats.splice($scope.cats.indexOf(cat), 1);
-	      $http.delete("/api/cats/" + cat._id)
-	        .error(function(data) {
-	          console.log(data);
-	          $scope.errors.push({ msg: "could not remove cat \"" + cat.name + "\"" });
-	          $scope.cats.push(cat);
-	      });
+
+	      Cat.remove(cat, function(err, data) {
+	        if (err) {
+	          // $scope.cats.push(cat);
+	          return $scope.errors.push({ msg: "could not remove cat \"" + cat.name + "\"" });
+	        }
+	      })
+	      // $http.delete("/api/cats/" + cat._id)
+	      //   .error(function(data) {
+	      //     console.log(data);
+	      //     $scope.errors.push({ msg: "could not remove cat \"" + cat.name + "\"" });
+	      //     $scope.cats.push(cat);
+	      // });
 	    };
 
 	    $scope.catEdit = function(cat) {
@@ -28389,16 +28515,24 @@
 
 	    $scope.saveEdit = function(cat) {
 	      cat.editing = false;
-	      $http.put("/api/cats/" + cat._id, cat)
-	        .error(function(data) {
-	          console.log(data);
-	          $scope.errors.push({ msg: "Error editing cat from " + cat.originalCat + " to " + cat.name });
-	          cat.name = cat.originalCat;
-	        });
+	      // $http.put("/api/cats/" + cat._id, cat)
+	      //   .error(function(data) {
+	      //     console.log(data);
+	      //     $scope.errors.push({ msg: "Error editing cat from " + cat.originalCat + " to " + cat.name });
+	      //     cat.name = cat.originalCat;
+	      //   });
+	      Cat.save(cat, function(err, data) {
+	        if (err) {
+	          $scope.cats.splice($scope.cats.indexOf(cat), 1, cat.originalCat)
+	          return $scope.errors.push({msg: 'Could not save cat: ' + cat.name});
+	        }
+	        cat.originalCat = {};
+	      });
 	    };
 
 	    $scope.clearErrors = function() {
 	      $scope.errors = [];
+	      $scope.getAll();
 	    };
 	  } ]);
 
@@ -28411,7 +28545,7 @@
 
 
 /***/ },
-/* 6 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -30882,6 +31016,28 @@
 
 
 	})(window, window.angular);
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	__webpack_require__(3);
+	__webpack_require__(8);
+
+	describe("copy service", function() {
+	  beforeEach(angular.mock.module("catsApp"));
+
+	  it("should copy an object", angular.mock.inject(function(copy) {
+	    var testObj = {test: "value"};
+	    var copiedObj = copy(testObj);
+	    testObj = null;
+	    expect(copiedObj.test).toBe("value");
+	    expect(testObj).toBe(null);
+	  }))
+	})
 
 
 /***/ }

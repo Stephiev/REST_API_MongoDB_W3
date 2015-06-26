@@ -152,7 +152,7 @@ module.exports = function(grunt) {
   grunt.registerTask("build:dev", [ "clean:dev", "webpack:client", "copy:html", "test" ]);
   grunt.registerTask("build", [ "build:dev" ]);
   grunt.registerTask("test", [ "webpack:test" ]);
-  grunt.registerTask("default", [ "build", "pretty" ]);
+  grunt.registerTask("default", [ "build", "pretty", "karmatest" ]);
   grunt.registerTask("karmatest", [ "webpack:karmaTest", "karma:test" ]);
   grunt.registerTask("run", [ "default" ]);
   grunt.registerTask("serve:dev", [ "build:dev", "concurrent:nodemonWatch" ]);

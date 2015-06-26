@@ -149,7 +149,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask("pretty", [ "jshint:mocha", "jshint:dev", "jshint:jasmine", "jscs" ]);
-  grunt.registerTask("build:dev", [ "webpack:client", "copy:html", "test" ]);
+  grunt.registerTask("build:dev", [ "clean:dev", "webpack:client", "copy:html", "test" ]);
   grunt.registerTask("build", [ "build:dev" ]);
   grunt.registerTask("test", [ "webpack:test" ]);
   grunt.registerTask("default", [ "build", "pretty" ]);

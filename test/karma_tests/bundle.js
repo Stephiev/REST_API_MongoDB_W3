@@ -46,7 +46,7 @@
 
 	__webpack_require__(1); // require each of our tests into this entry point so it can bundle them
 	__webpack_require__(2);
-	__webpack_require__(9);
+	__webpack_require__(11);
 
 
 /***/ },
@@ -72,7 +72,7 @@
 	"use strict";
 
 	__webpack_require__(3);
-	__webpack_require__(8);
+	__webpack_require__(10);
 
 	describe("cats controller",  function() {
 	  var $ControllerConstructor;
@@ -176,7 +176,7 @@
 
 	"use strict";
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	// Our list of dependencies (in the square brackets)
 	// in the form of dependency injections
@@ -187,16 +187,16 @@
 	// This is how we get data from our model into our view
 	// $scope should only be used in directives and controllers
 
-
 	// services
-	__webpack_require__(5)(catsApp);
 	__webpack_require__(6)(catsApp);
-
-
-	// controllers
 	__webpack_require__(7)(catsApp);
 
+	// controllers
+	__webpack_require__(4)(catsApp);
+
 	// directives
+	__webpack_require__(8)(catsApp);
+	__webpack_require__(9)(catsApp);
 
 	// Changes in the view affect the scope in the controller
 	// that corresponds to that view. When we update one we
@@ -205,6 +205,84 @@
 
 /***/ },
 /* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	module.exports = function(app) {
+	  app.controller("catsController", [ "$scope", "copy", "RESTresource", function($scope, copy, resource) {
+	    var Cat = resource("cats"); // this is where resourceName gets passed into our fxn
+	    $scope.errors = [];
+	    $scope.cats = [];
+	    $scope.getAll = function() {
+	        Cat.getAll(function(err, data) {
+	          if (err) {
+	            return $scope.errors.push({ msg: "error retrieving cats" }); // use return to exit fxn early
+	          }
+	          $scope.cats = data;
+	        })
+	    };
+
+	    // Make run in an async fashion, see cat before stored in db
+	    $scope.createNewCat = function() {
+	      var newCat = $scope.newCat; // transfer data from our directive scope to controller scope
+	      $scope.newCat = null;
+	      $scope.cats.push(newCat);
+	      Cat.create(newCat, function(err, data) {
+	        if (err) {
+	         return $scope.errors.push({ msg: "Error saving cat: " + newCat.name });
+	        }
+
+	        $scope.cats.splice($scope.cats.indexOf(newCat), 1, data);
+	      });
+	    };
+
+	    $scope.removeCat = function(cat) {
+	      $scope.cats.splice($scope.cats.indexOf(cat), 1);
+
+	      Cat.remove(cat, function(err, data) {
+	        if (err) {
+	          return $scope.errors.push({ msg: "could not remove cat \"" + cat.name + "\"" });
+	        }
+	      })
+	    };
+
+	    $scope.catEdit = function(cat) {
+	      cat.editing = true;
+	      cat.originalCat = cat.name;
+	    };
+
+	    $scope.cancelEdit = function(cat) {
+	      cat.name = cat.originalCat;
+	      cat.editing = false;
+	    };
+
+	    $scope.saveEdit = function(cat) {
+	      cat.editing = false;
+	      Cat.save(cat, function(err, data) {
+	        if (err) {
+	          $scope.cats.splice($scope.cats.indexOf(cat), 1, cat.originalCat)
+	          return $scope.errors.push({ msg: "Could not save cat: " + cat.name });
+	        }
+	        cat.originalCat = {};
+	      });
+	    };
+
+	    $scope.clearErrors = function() {
+	      $scope.errors = [];
+	      $scope.getAll();
+	    };
+	  } ]);
+	};
+
+	// anything that starts with a dollar sign is an angular component
+	// function that takes an app that"s  called app.contoller
+	// you inject services into a controller
+	// $http is how we make requests
+
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28342,13 +28420,13 @@
 	!window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	module.exports = function(app) {
-	  app.factory('copy', function() {
+	  app.factory("copy", function() {
 	    return function(objToCopy) {
 	      var obj = {};
 	      Object.keys(objToCopy).forEach(function(key) {
@@ -28361,10 +28439,11 @@
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+
 	// 3 diff ways to create a service, most common is the factory
 	// method.
 	// all factories will return an object and the object will have a series
@@ -28384,7 +28463,7 @@
 	    }
 	  };
 
-	  app.factory("RESTresource", ["$http", function($http) { // can remove it from our controller now
+	  app.factory("RESTresource", [ "$http", function($http) { // can remove it from our controller now
 	    return function(resourceName) {  // return a function that returns a fxn
 	      return {
 	        getAll: function(callback) { // could also be called find
@@ -28398,154 +28477,68 @@
 	            .success(handlSuccess(callback))
 	            .error(handleError(callback)); // callback defined in controller
 	        },
-	      // },
 
 	      save: function(resourceData, callback) {
 	        $http.put("/api/" + resourceName + "/" + resourceData._id, resourceData)
 	          .success(handlSuccess(callback))
 	          .error(handleError(callback));
 	        },
-	      // },
 
 	      remove: function(resourceData, callback) {
 	        $http.delete("/api/" + resourceName + "/" + resourceData._id)
 	          .success(handlSuccess(callback))
 	          .error(handleError(callback));
 	      }
+
 	      // don't need to have .success and .error we're making this a node-style callbacks
 	     }
 	    };
-	  }]);
+	  } ]);
 	};
 
 
 /***/ },
-/* 7 */
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	// This fxn will immediatley return an object that gives us the metadata about our
+	// directive.
+	// Need a template and a restrict at a minimum. The restrict is how this directive can be loaded into
+	// the dom. Four diff ways, comments, attributes, elemens, and class = ECMA. (M for comment)
+	// A restric has to be in every single directive you make, class so you can garb in CSS and style all the same
+
+	module.exports = function(app) {
+	  app.directive("titleDirective", function() {
+	    return {
+	      restrict: "AC",
+	      template: "<title>I am a new title</title>",
+	      scope: {} // scope object for each and every instance of this directive. Isolate scope
+	    }
+	  });
+	};
+
+
+/***/ },
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	module.exports = function(app) {
-	  app.controller("catsController", [ "$scope", "copy", "RESTresource", function($scope, copy, resource) {
-	    var Cat = resource("cats"); // this is where resourceName gets passed into our fxn
-	    $scope.errors = [];
-	    $scope.cats = [];
-	    $scope.getAll = function() {
-	      // $http.get("/api/cats") // returns promises with 2 different pieces. a .success and .error
-	        // .success(function(data) {
-	        //   $scope.cats = data; // coming from our DB in our REST api is an array of cats. setting that array to scope.cats
-	        // })
-	        // .error(function(data) {
-	        //   console.log(data);
-	        //   $scope.errors.push({ msg: "error retrieving cats" });
-	        // });
-	        Cat.getAll(function(err, data) {
-	          if (err) return $scope.errors.push({ msg: "error retrieving cats" }); // use return to exit fxn early
-	          $scope.cats = data;
-	        })
-	    };
-
-	    // Make run in an async fashion, see cat before stored in db
-	    $scope.createNewCat = function(cat) {
-	      // $scope.cats.push($scope.newCat); // Update the UI before receiving a response
-	      // $http.post("/api/cats", $scope.newCat)
-	      //   .success(function(data) {
-	      //     $scope.newCat._id = data._id; // Place ID on newCat object so we can edit
-	      //     $scope.newCat = null;
-	      //   })
-	      //   .error(function(data) {
-	      //     console.log(data);
-	      //     $scope.errors.push({ msg: "could not create a new cat" });
-	      //   });
-	      // console.log("this is cat")
-	      // console.log(cat);
-	      // var newCat = copy(cat);
-
-	      // cat.name = "";
-	      // var newCat = $scope.newCat;
-	      // $scope.cats.push(newCat);
-	      // Cat.create(newCat, function(err, data) {
-	      //   if (err) return $scope.erros.push({ msg: "could not save cat: " + newCat.name});
-	      //   $scope.cats.splice($scope.cats.indexOf(newCat), 1, data);
-	      // })
-
-	      // $scope.newCat._id = data._id
-	      var newCat = $scope.newCat;
-	      $scope.newCat = null;
-	      $scope.cats.push(newCat);
-	      Cat.create(newCat, function(err, data) {
-	        if (err) {
-	          // $scope.cats.splice($scope.cats.indexOf(newCat), 1);
-	         return $scope.errors.push({msg: 'Error saving cat: ' + newCat.name });
-	        }
-
-	        $scope.cats.splice($scope.cats.indexOf(newCat), 1, data);
-	      });
-	    };
-
-
-
-	    $scope.removeCat = function(cat) {
-	      $scope.cats.splice($scope.cats.indexOf(cat), 1);
-
-	      Cat.remove(cat, function(err, data) {
-	        if (err) {
-	          // $scope.cats.push(cat);
-	          return $scope.errors.push({ msg: "could not remove cat \"" + cat.name + "\"" });
-	        }
-	      })
-	      // $http.delete("/api/cats/" + cat._id)
-	      //   .error(function(data) {
-	      //     console.log(data);
-	      //     $scope.errors.push({ msg: "could not remove cat \"" + cat.name + "\"" });
-	      //     $scope.cats.push(cat);
-	      // });
-	    };
-
-	    $scope.catEdit = function(cat) {
-	      cat.editing = true;
-	      cat.originalCat = cat.name;
-
-	    };
-
-	    $scope.cancelEdit = function(cat) {
-	      cat.name = cat.originalCat;
-	      cat.editing = false;
-	    };
-
-	    $scope.saveEdit = function(cat) {
-	      cat.editing = false;
-	      // $http.put("/api/cats/" + cat._id, cat)
-	      //   .error(function(data) {
-	      //     console.log(data);
-	      //     $scope.errors.push({ msg: "Error editing cat from " + cat.originalCat + " to " + cat.name });
-	      //     cat.name = cat.originalCat;
-	      //   });
-	      Cat.save(cat, function(err, data) {
-	        if (err) {
-	          $scope.cats.splice($scope.cats.indexOf(cat), 1, cat.originalCat)
-	          return $scope.errors.push({msg: 'Could not save cat: ' + cat.name});
-	        }
-	        cat.originalCat = {};
-	      });
-	    };
-
-	    $scope.clearErrors = function() {
-	      $scope.errors = [];
-	      $scope.getAll();
-	    };
-	  } ]);
-
-	};
-
-	// anything that starts with a dollar sign is an angular component
-	// function that takes an app that's  called app.contoller
-	// you inject services into a controller
-	// $http is how we make requests
+	  app.directive("newCatForm", function() {
+	    return {
+	      restrict: "A",
+	      replace: true, // way to keep semantic meaning of html code, to avoid wrapper divs
+	      templateUrl: "/templates/directives/new_cat_form.html"
+	    }
+	  })
+	}
 
 
 /***/ },
-/* 8 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31019,25 +31012,25 @@
 
 
 /***/ },
-/* 9 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	__webpack_require__(3);
-	__webpack_require__(8);
+	__webpack_require__(10);
 
 	describe("copy service", function() {
 	  beforeEach(angular.mock.module("catsApp"));
 
 	  it("should copy an object", angular.mock.inject(function(copy) {
-	    var testObj = {test: "value"};
+	    var testObj = { test: "value" };
 	    var copiedObj = copy(testObj);
 	    testObj = null;
 	    expect(copiedObj.test).toBe("value");
 	    expect(testObj).toBe(null);
-	  }))
-	})
+	  }));
+	});
 
 
 /***/ }

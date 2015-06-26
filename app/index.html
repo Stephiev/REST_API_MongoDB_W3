@@ -2,7 +2,8 @@
 <html lang="en">
    <head>
       <meta charset="UTF-8">
-      <title>Client Side</title>
+      <!-- <title>Client Side</title> -->
+      <section data-title-directive></section>
    </head>
    <body data-ng-app="catsApp">
       <main data-ng-controller="catsController" data-ng-init="getAll()">
@@ -15,10 +16,11 @@
             </ul>
             <button data-ng-click="clearErrors()"> Clear Errors</button>
          </aside>
-         <form name="newCatForm" data-ng-submit="createNewCat()">
+         <div data-new-cat-form></div>
+        <!--  <form name="newCatForm" data-ng-submit="createNewCat()">
             <input type="text" required data-ng-model="newCat.name">
             <button type="submit" data-ng-disabled="newCatForm.$invalid">Create New Cat</button>
-         </form>
+         </form> -->
          <ul data-ng-repeat="cat in cats">
             <li>
                {{cat.name}}

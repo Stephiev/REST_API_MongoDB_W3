@@ -15,8 +15,8 @@ module.exports = function(app) {
     };
 
     // Make run in an async fashion, see cat before stored in db
-    $scope.createNewCat = function(cat) {
-      var newCat = $scope.newCat;
+    $scope.createNewCat = function() {
+      var newCat = $scope.newCat; // transfer data from our directive scope to controller scope
       $scope.newCat = null;
       $scope.cats.push(newCat);
       Cat.create(newCat, function(err, data) {

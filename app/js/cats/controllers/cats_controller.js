@@ -15,9 +15,9 @@ module.exports = function(app) {
     };
 
     // Make run in an async fashion, see cat before stored in db
-    $scope.createNewCat = function() {
-      var newCat = $scope.newCat; // transfer data from our directive scope to controller scope
-      $scope.newCat = null;
+    $scope.createNewCat = function(cat) {
+      var newCat = angular.copy(cat); // transfer data from our directive scope to controller scope
+      cat.name = ""
       $scope.cats.push(newCat);
       Cat.create(newCat, function(err, data) {
         if (err) {
@@ -67,6 +67,6 @@ module.exports = function(app) {
 };
 
 // anything that starts with a dollar sign is an angular component
-// function that takes an app that"s  called app.contoller
+// function that takes an app that"s called app.controller
 // you inject services into a controller
 // $http is how we make requests

@@ -16,7 +16,12 @@
             </ul>
             <button data-ng-click="clearErrors()"> Clear Errors</button>
          </aside>
-         <div data-new-cat-form></div>
+
+
+         <div data-cat-form-directive
+              data-save="createNewCat(cat)"
+              data-button-text="'Creat New Cat'"
+              data-label-text="Create A New Cat"></div>
         <!--  <form name="newCatForm" data-ng-submit="createNewCat()">
             <input type="text" required data-ng-model="newCat.name">
             <button type="submit" data-ng-disabled="newCatForm.$invalid">Create New Cat</button>

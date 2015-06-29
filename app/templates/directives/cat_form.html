@@ -1,0 +1,5 @@
+ <form name="catForm" data-ng-submit="save({cat: cat})">
+  <label>{{labelText}}</label>
+  <input type="text" required data-ng-model="cat.name">
+  <button type="submit" data-ng-disabled="catForm.$invalid">{{buttonText}}</button>
+</form>

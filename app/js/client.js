@@ -20,7 +20,7 @@ require("./cats/controllers/cats_controller")(catsApp);
 
 // directives
 require("./directives/title_directive")(catsApp);
-require("./cats/directives/new_cat_form_directive")(catsApp);
+require("./cats/directives/cat_form_directive")(catsApp);
 
 // Changes in the view affect the scope in the controller
 // that corresponds to that view. When we update one we

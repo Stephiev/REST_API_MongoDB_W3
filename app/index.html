@@ -20,7 +20,7 @@
 
          <div data-cat-form-directive
               data-save="createNewCat(cat)"
-              data-button-text="'Creat New Cat'"
+              data-button-text="'Create New Cat'"
               data-label-text="Create A New Cat"></div>
         <!--  <form name="newCatForm" data-ng-submit="createNewCat()">
             <input type="text" required data-ng-model="newCat.name">
@@ -31,11 +31,18 @@
                {{cat.name}}
                <button data-ng-disabled="!cat._id" data-ng-click="removeCat(cat)">Delete</button>
                <button data-ng-if="!cat.editing" data-ng-disabled="!cat._id" data-ng-click="catEdit(cat)">Edit</button>
-               <form name="{{'editing' + cat._id}}" data-ng-if="cat.editing" data-ng-submit="saveEdit(cat)">
+              <!--  <form name="{{'editing' + cat._id}}" data-ng-if="cat.editing" data-ng-submit="saveEdit(cat)">
                   <input type="text" data-ng-model="cat.name">
-                  <button type="submit">Save Changes</button>
+                  <button type="submit">Save Changes</button> -->
+               <div data-cat-form-directive
+                    data-save="saveEdit(cat)"
+                    data-button-text="'Save Changes'"
+                    data-label-text="Editing Cat: "
+                    data-ng-if="cat.editing"
+                    data-cat="cat">
                   <button data-ng-click="cancelEdit(cat)">Cancel</button>
-               </form>
+               </div>
+               <!-- </form> -->
             </li>
          </ul>
       </main>

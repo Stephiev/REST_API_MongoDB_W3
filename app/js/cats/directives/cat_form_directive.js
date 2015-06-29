@@ -10,8 +10,9 @@ module.exports = function(app) {
         save: "&", // pass in create newcat function into this directive
         buttonText: "=", // interpreted as JS
         labelText: "@", // literal interpretation
+        cat: "="
       },
-      // transclude: true
+      transclude: true
     }
   })
 }

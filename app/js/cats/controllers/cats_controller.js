@@ -59,6 +59,16 @@ module.exports = function(app) {
       });
     };
 
+    $scope.toggleEdit = function(cat) {
+      if (cat.editing) {
+        cat.editing = false;
+        cat = catBackup;
+      } else {
+       var catBackup = angular.copy(cat);
+       cat.editing = true;
+      }
+    }
+
     $scope.clearErrors = function() {
       $scope.errors = [];
       $scope.getAll();

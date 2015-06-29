@@ -3,6 +3,7 @@
 var mongoose = require("mongoose");
 
 var catSchema = mongoose.Schema({
+  authorId: { type: String, required: true },
   name: { type: String, required: true },
   type: String
 });

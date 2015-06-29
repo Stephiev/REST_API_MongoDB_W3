@@ -6,46 +6,8 @@
       <section data-title-directive></section>
    </head>
    <body data-ng-app="catsApp">
-      <main data-ng-controller="catsController" data-ng-init="getAll()">
-         <h1>Welcome to FurLand, the World of Cats!</h1>
-         <h2>Cats:</h2>
-         <aside data-ng-if="errors.length">
-            <h2>Errors:</h2>
-            <ul data-ng-repeat="error in errors">
-               <li>{{error.msg}}</li>
-            </ul>
-            <button data-ng-click="clearErrors()"> Clear Errors</button>
-         </aside>
-
-
-         <div data-cat-form-directive
-              data-save="createNewCat(cat)"
-              data-button-text="'Create New Cat'"
-              data-label-text="Create A New Cat"></div>
-        <!--  <form name="newCatForm" data-ng-submit="createNewCat()">
-            <input type="text" required data-ng-model="newCat.name">
-            <button type="submit" data-ng-disabled="newCatForm.$invalid">Create New Cat</button>
-         </form> -->
-         <ul data-ng-repeat="cat in cats">
-            <li>
-               {{cat.name}}
-               <button data-ng-disabled="!cat._id" data-ng-click="removeCat(cat)">Delete</button>
-               <button data-ng-if="!cat.editing" data-ng-disabled="!cat._id" data-ng-click="catEdit(cat)">Edit</button>
-              <!--  <form name="{{'editing' + cat._id}}" data-ng-if="cat.editing" data-ng-submit="saveEdit(cat)">
-                  <input type="text" data-ng-model="cat.name">
-                  <button type="submit">Save Changes</button> -->
-               <div data-cat-form-directive
-                    data-save="saveEdit(cat)"
-                    data-button-text="'Save Changes'"
-                    data-label-text="Editing Cat: "
-                    data-ng-if="cat.editing"
-                    data-cat="cat">
-                  <button data-ng-click="cancelEdit(cat)">Cancel</button>
-               </div>
-               <!-- </form> -->
-            </li>
-         </ul>
-      </main>
+    <div data-logout-directive></div>
+      <main data-ng-view></main> <!-- Have to have on parent in your view files -->
       <script src="bundle.js"></script>
    </body>
 </html>

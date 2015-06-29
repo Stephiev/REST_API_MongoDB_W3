@@ -19,9 +19,11 @@ module.exports = function(app) {
     }
   };
 
-  app.factory("RESTresource", [ "$http", function($http) { // can remove it from our controller now
+  app.factory("RESTresource", [ "$http", "$cookies", function($http, $cookies) { // can remove it from our controller now
     return function(resourceName) {  // return a function that returns a fxn
-      return {
+      var eat = $cookies.get("eat");
+      $http.defaults.headers.common["token"] = eat; // from eat auth what was it sent as?
+       return {
         getAll: function(callback) { // could also be called find
           $http.get("/api/" + resourceName)
             .success(handlSuccess(callback))

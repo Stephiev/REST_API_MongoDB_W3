@@ -4,5 +4,6 @@
   "requireMultipleVarDecl": null,
   "disallowMultipleVarDecl": null,
   "maximumLineLength": null,
-  "requireSpacesInsideParentheses": null
+  "requireSpacesInsideParentheses": null,
+  "requireCurlyBraces": [false]
 }

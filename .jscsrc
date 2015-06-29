@@ -1,0 +1,9 @@
+{
+  "preset": "jquery",
+  "requireDotNotation": null,
+  "requireMultipleVarDecl": null,
+  "disallowMultipleVarDecl": null,
+  "maximumLineLength": null,
+  "requireSpacesInsideParentheses": null,
+  "requireCurlyBraces": [false]
+}
